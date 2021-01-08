@@ -1,0 +1,101 @@
+﻿<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>丰泽木业</title>
+		<meta name="keywords" content="">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		<link rel="shortcut icon" href="img/common/logo.png" type="image/x-icon" />
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="css/app.css?v=3f0bf2ecfd" />
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/suitphone.js"></script>
+		<script src="https://webapi.amap.com/maps?v=1.4.15&key=53db7091245aee255c69be442b0ba2a5"></script>
+		<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+	</head>
+
+	<body>
+		<div class="app app-flex-box">
+			<div class="search-box">
+				<div class="search-inner-box">
+					<div class="search-list">
+						<input type="text" name="" value="" id="keyName" placeholder="请输入关键词" />
+					</div>
+					<div class="search-list">
+						<input type="number" name="" value="" id="range" placeholder="请输入范围" />
+					</div>
+				</div>
+			</div>
+			<div class="main-box" id="mapBox"></div>
+			<div class="btn-box">
+				<div class="btn-inner-box">
+					<div class="btn" onclick="queryList();">确定</div>
+				</div>
+			</div>
+		</div>
+		<div class="full-box content-box hide-box">
+			<div class="btn" onclick="hideContent();">关闭</div>
+			<div class="content-list-box" id="contentListBox"></div>
+		</div>
+	</body>
+	<script>
+		var center = [];
+		var map = new AMap.Map('mapBox', {
+			zoom: 16,
+			resizeEnable: true
+		})
+		map.plugin('AMap.Geolocation', function() {
+			var geolocation = new AMap.Geolocation({
+				enableHighAccuracy: true,
+				timeout: 10000
+			});
+			map.addControl(geolocation);
+			geolocation.getCurrentPosition();
+			AMap.event.addListener(geolocation, 'complete', function(res) {
+				console.log(res)
+			}); //返回定位信息
+			AMap.event.addListener(geolocation, 'error', function(res) {
+				console.log(res)
+			}); //返回定位出错信息
+		});
+		AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+			var positionPicker = new PositionPicker({
+				mode: 'dragMarker',
+				map: map
+			});
+			positionPicker.on('success', function(positionResult) {
+				if(positionResult.info == "OK") {
+					center = [positionResult.position.lng, positionResult.position.lat];
+				}
+			});
+			positionPicker.on('fail', function(positionResult) {
+				layer.msg("定位失败");
+			});
+			positionPicker.start();
+		});
+
+		function queryList() {
+			AMap.service(["AMap.PlaceSearch"], function() {
+				var placeSearch = new AMap.PlaceSearch({
+					type: '汽车服务|汽车销售|汽车维修|摩托车服务|餐饮服务|购物服务|生活服务|体育休闲服务|医疗保健服务|住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施', // 兴趣点类别
+					pageSize: 10,
+					pageIndex: 1,
+					panel: "contentListBox"
+				});
+				placeSearch.searchNearBy($("#keyName").val(), center, $("#range").val(), function(status, result) {
+					$(".content-box").show();
+				});
+			});
+		}
+
+		function hideContent() {
+			$(".content-box").hide();
+		}
+	</script>
+
+</html>

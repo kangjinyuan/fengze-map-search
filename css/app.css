@@ -1,0 +1,26 @@
+/*框架外框*/
+.app{background:#fff;overflow: hidden;}
+.app-flex-box{width: 100%;height:100%;position: absolute;top: 0;left: 0;display:flex;display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-ms-flexbox;-webkit-flex-direction: column;-moz-flex-direction: column;-ms-flex-direction: column;-o-flex-direction: column;flex-direction: column;}
+
+/*地图*/
+.main-box{width: 100%;height: 100%;position: relative;}
+
+.search-box{width: 100%;}
+.search-inner-box{width: 6.9rem;padding: 0rem .3rem;overflow: hidden;}
+.search-list{width: 100%;height: .88rem;overflow: hidden;border-bottom: .02rem solid #e1e1e1;}
+.search-list:last-child{border: none;}
+.search-list input{width: 100%;height: 100%;border: none;outline: none;font-size: .32rem;line-height: .66rem;color: #333;}
+
+/*按钮*/
+.btn-box{width: 100%;}
+.btn-inner-box{width: 100%;overflow: hidden;}
+.btn{width: 100%;height: .88rem;background-color: #fda414;font-size: .36rem;line-height: .88rem;color: #fff;text-align: center;}
+
+/*隐藏模块*/
+.hide-box{display: none;}
+
+/*满屏*/
+.full-box{width: 100%;height: 100%;background-color: #fff;overflow: auto;position: absolute;top: 0;left: 0;z-index: 9999;}
+
+/*搜索内容框*/
+.content-list-box{width: 100%;overflow: hidden;}
